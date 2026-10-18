@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EvidenceForge | Research & Falsification Lab</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--panel2:#18233b;--line:#2a3856;--text:#edf3ff;--muted:#a8b5ce;--cyan:#66e3df;--purple:#a99aff;--green:#7fe0ad;--yellow:#ffd477;--red:#ff8f9a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#17274a 0,#0b1020 42%);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{padding:28px max(20px,calc((100% - 1180px)/2)) 22px;border-bottom:1px solid var(--line);background:#0b1020d9}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--purple));display:grid;place-items:center;color:#10162b;font-size:25px;font-weight:900}
+h1{font-size:clamp(25px,4vw,38px);margin:0;letter-spacing:-.8px}.subtitle{color:var(--muted);margin:5px 0 0}.wrap{max-width:1180px;margin:auto;padding:24px 20px 50px}
+.notice{border:1px solid #66562d;background:#282317;color:#ffe7ad;padding:12px 15px;border-radius:12px;margin-bottom:18px;font-size:13px}
+.panel{background:linear-gradient(180deg,#141e34,#10182a);border:1px solid var(--line);border-radius:17px;padding:19px;margin-bottom:18px;box-shadow:0 10px 28px #0002}
+.panel h2{margin:0 0 12px;font-size:19px}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:1.4px;font-size:11px;font-weight:800;margin-bottom:6px}
+textarea,input{font:inherit;color:var(--text);background:#0b1325;border:1px solid #344361;border-radius:11px;padding:12px;width:100%;outline:none}
+textarea:focus,input:focus{border-color:var(--cyan)}textarea{min-height:92px;resize:vertical}
+button{font:inherit;font-weight:750;border:0;border-radius:10px;padding:11px 15px;cursor:pointer;transition:.15s}button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:disabled{opacity:.55;cursor:wait;transform:none}
+.primary{background:linear-gradient(100deg,var(--cyan),#9af1c4);color:#0b1727}.secondary{background:#24324f;color:var(--text);border:1px solid #3a4a69}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row .grow{flex:1;min-width:220px}.hint{color:var(--muted);font-size:12px;margin-top:8px}
+.progress{height:7px;background:#26334d;border-radius:99px;overflow:hidden;margin-top:14px}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width .3s}
+.statusline{color:var(--muted);font-size:13px;margin-top:9px;min-height:20px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:#0d1527;border:1px solid var(--line);border-radius:13px;padding:15px;min-width:0}.card h3{margin:0 0 8px;font-size:16px}.card p{color:var(--muted);margin:7px 0}.pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:800;letter-spacing:.2px;background:#26334d;color:#dbe6ff}
+.pill.supported{background:#173b31;color:#a5f4c9}.pill.disputed{background:#49252e;color:#ffb4bd}.pill.unresolved{background:#44381d;color:#ffe1a0}
+.list{display:grid;gap:10px}.item{padding:12px;border:1px solid #293752;border-radius:11px;background:#111b30}.item strong{display:block;margin-bottom:5px}.item p{margin:4px 0;color:#c0cbe0;font-size:13px}.item a{color:var(--cyan);text-decoration:none;overflow-wrap:anywhere}.item a:hover{text-decoration:underline}
+.article-evidence{margin:8px 0}.article-evidence summary{cursor:pointer;color:var(--cyan);font-weight:750;padding:8px 0}.article-text{white-space:pre-wrap;overflow-wrap:anywhere;max-height:420px;overflow:auto;padding:12px;background:#09101e;border:1px solid #293752;border-radius:9px;color:#dce6f8;font-size:13px;line-height:1.65}.empty{color:var(--muted);font-size:13px;padding:12px;border:1px dashed #3a4966;border-radius:10px}.small{font-size:12px;color:var(--muted)}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.metric{font-size:23px;font-weight:850}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metricbox{background:#0d1527;border:1px solid var(--line);border-radius:12px;padding:12px}.report{white-space:pre-wrap;max-height:380px;overflow:auto;background:#0a1222;border:1px solid var(--line);border-radius:12px;padding:15px;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:#d9e5fa}.saved-list{display:grid;gap:10px}.coverage-grid{display:grid;gap:10px}.coverage-item{padding:13px;border:1px solid #293752;border-radius:11px;background:#111b30}.coverage-item h3{font-size:14px;margin:0 0 5px}.coverage-item p{font-size:12px;color:var(--muted);margin:5px 0}.coverage-meter{height:6px;background:#26334d;border-radius:99px;overflow:hidden;margin:8px 0}.coverage-meter span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple))}.coverage-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.saved-item{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px;border:1px solid #293752;border-radius:11px;background:#111b30}.saved-item .saved-info{flex:1;min-width:200px}.saved-item p{margin:3px 0;color:var(--muted);font-size:12px}.voice-btn.listening{background:#592b39;color:#fff;border:1px solid #b95e72}.save-status{font-size:12px;color:var(--green)}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:10px}.hidden{display:none!important}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}.wrap{padding:16px 12px 35px}header{padding:20px 14px}.panel{padding:14px}}
+
+/* Research-chat workspace layout */
+body{background:var(--bg);min-height:100vh}
+/* Brand lives in the conversation sidebar; the project headline gets a proper hero area. */
+body>header{display:none}
+.masthead-side{display:none}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,#122c39 0%,#122039 54%,#171d39 100%);border:1px solid #30415f;border-radius:20px;padding:34px 36px;margin:0 0 1px;box-shadow:0 18px 45px #0002}
+.hero:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-75px;top:-120px;background:radial-gradient(circle,#66e3df24,transparent 68%);pointer-events:none}
+.hero-kicker{color:var(--cyan);text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:850;margin-bottom:12px}
+.hero h1{font-size:clamp(32px,4.1vw,52px);line-height:1.08;letter-spacing:-1.7px;max-width:760px;margin:0 0 14px;font-weight:850}
+.hero p{max-width:760px;color:#b8c7df;font-size:15px;line-height:1.7;margin:0 0 17px}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap}
+.hero-tags span{display:inline-flex;padding:6px 11px;border:1px solid #34496a;border-radius:99px;background:#101a30;color:#c9d7ee;font-size:11px;font-weight:650}
+.sidebar-brand{display:flex;align-items:center;gap:11px;padding:0 3px 23px;margin-bottom:17px;border-bottom:1px solid #26334d}
+.sidebar-brand .logo{width:42px;height:42px;flex-shrink:0}
+.sidebar-brand h2{font-size:17px;margin:0;letter-spacing:-.4px}
+.sidebar-brand p{font-size:10px;color:var(--muted);margin:1px 0 0;font-weight:750;letter-spacing:.6px}
+.wrap{max-width:none;width:100%;margin:0;padding:22px 28px 48px 330px;display:flex;flex-direction:column;gap:17px;position:relative}
+.wrap>.panel{margin:0;width:100%;min-width:0}
+#savedPanel{position:fixed;z-index:15;top:65px;left:0;bottom:0;width:302px;overflow-y:auto;border-radius:0;border:0;border-right:1px solid var(--line);border-top:1px solid var(--line);padding:20px 14px 28px;background:#0e1629;box-shadow:none}
+#savedPanel .section-head{display:block}
+#savedPanel .section-head>div{min-width:0}
+#savedPanel .eyebrow{font-size:10px;letter-spacing:1px}
+#savedPanel h2{font-size:17px;margin-bottom:6px}
+#savedPanel .small{line-height:1.45}
+#savedPanel #refreshSavedBtn{width:100%;margin:10px 0 13px;padding:8px 10px;font-size:12px}
+#savedPanel .saved-list{gap:7px}
+#savedPanel .saved-item{display:block;padding:10px;background:#121d33;border-color:#273653;border-radius:10px}
+#savedPanel .saved-item .saved-info{min-width:0}
+#savedPanel .saved-info strong{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.4}
+#savedPanel .saved-item p{font-size:10px;line-height:1.45}
+#savedPanel .connect-btn{margin-top:8px;padding:6px 10px;font-size:11px}
+#savedPanel .history-intro{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+#savedPanel .history-intro span{font-size:11px;color:var(--muted)}
+#savedPanel .history-intro .history-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);display:inline-block;margin-right:6px}
+.wrap>.panel:first-child{background:linear-gradient(145deg,#151f36,#10182a);padding:23px 25px}
+.wrap>.panel:first-child h2{font-size:22px;letter-spacing:-.35px}
+#question{min-height:104px;font-size:15px;line-height:1.6}
+#startBtn{padding:12px 18px}
+.panel{box-shadow:0 8px 24px #0001}
+.panel h2{letter-spacing:-.2px}
+#coveragePanel{scroll-margin-top:84px}
+#savedPanel{scroll-margin-top:80px}
+footer{padding:18px 0 0}
+@media(max-width:900px){.wrap{padding-left:318px;padding-right:18px}.masthead-side{display:none}}
+@media(max-width:680px){header{padding:12px 15px}.wrap{padding:15px 12px 32px;gap:13px}#savedPanel{position:static;width:auto;max-height:none;overflow:visible;border:1px solid var(--line);border-radius:14px;margin:0 12px 0;padding:14px;background:linear-gradient(180deg,#141e34,#10182a)}body{display:flex;flex-direction:column}.wrap{display:flex}#savedPanel .saved-list{grid-template-columns:1fr 1fr}#savedPanel .saved-item{min-width:0}.wrap>.panel:first-child{padding:17px}.wrap>.panel:first-child h2{font-size:19px}}
+@media(max-width:440px){#savedPanel .saved-list{grid-template-columns:1fr}.row button{width:100%}.row .grow{min-width:100%}}
+@media(max-width:900px){.hero{padding:28px 25px}.hero h1{font-size:clamp(30px,5vw,43px)}}
+@media(max-width:680px){.hero{padding:23px 19px;border-radius:15px}.hero h1{font-size:32px;letter-spacing:-1px}.hero p{font-size:14px}.sidebar-brand{padding-bottom:15px;margin-bottom:14px}}
+
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">E</div><div><h1>EvidenceForge</h1><p class="subtitle">Challenge the evidence. Not just the answer.</p></div><div class="masthead-side"><strong>Ask better questions.</strong>Follow the evidence · Keep the gaps visible</div></div></header>
+<main class="wrap">
+  <section class="hero" aria-label="EvidenceForge introduction">
+    <div class="hero-kicker">Adaptive research · Counter-evidence · Claim verification</div>
+    <h1>Challenge the evidence.<br>Not just the answer.</h1>
+    <p>Investigate a question from independent angles, actively challenge emerging claims, and track what is supported, disputed, or still unresolved.</p>
+    <div class="hero-tags"><span>Independent research</span><span>Active falsification</span><span>Evidence provenance</span><span>Decision history</span></div>
+  </section>
+  <section class="panel">
+    <div class="eyebrow">Field note 01 &nbsp; / &nbsp; Research request</div>
+    <h2>Start with a question worth checking.</h2>
+    <textarea id="question" placeholder="Example: What are the benefits and risks of artificial intelligence in education?">What are the benefits and risks of artificial intelligence in education?</textarea>
+    <div class="row" style="margin-top:12px"><button id="startBtn" class="primary">Start EvidenceForge investigation</button><button id="voiceBtn" class="secondary voice-btn" type="button">🎙 Ask by voice</button><button id="demoBtn" class="secondary">Load demo question</button><span id="voiceSupport" class="small">Type or use voice input.</span></div><div class="row" style="margin-top:8px"><span id="saveStatus" class="save-status">Automatic saving is enabled.</span></div>
+    <div class="progress"><div id="progressBar"></div></div><div id="status" class="statusline" aria-live="polite">Ready. Enter a question and start research.</div>
+  </section>
+
+  <section class="panel" id="savedPanel">
+    <div class="sidebar-brand"><div class="logo">E</div><div><h2>EvidenceForge</h2><p>ADAPTIVE RESEARCH LAB</p></div></div>
+    <div class="section-head"><div><div class="history-intro"><span><i class="history-dot"></i>YOUR WORKSPACE</span><span>Local history</span></div><div class="eyebrow">Recent conversations</div><h2>Research history</h2><p class="small">Your saved questions appear here. Select Connect to continue an investigation.</p></div><button id="refreshSavedBtn" class="secondary" type="button">Refresh saved list</button></div>
+    <div id="savedInvestigations" class="saved-list"><div class="empty">Loading saved investigations…</div></div>
+  </section>
+
+  <section class="panel" id="coveragePanel">
+    <div class="section-head"><div><div class="eyebrow">03 / Core adaptive engine</div><h2>Sub-question coverage</h2><p class="small">EvidenceForge breaks the main question into researchable sub-questions, searches each one, and marks where evidence is still thin. Coverage is a search-based signal, not proof that a topic is fully answered.</p></div><span class="pill">Coverage before conclusion</span></div>
+    <div id="coverageSummary" class="coverage-summary"><span class="pill">Not started</span></div>
+    <div id="subquestionCoverage" class="coverage-grid"><div class="empty">Start an investigation to generate and research sub-questions.</div></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head"><div><div class="eyebrow">04 / Independent investigations</div><h2>Two research agents</h2></div><span class="pill">Separate search strategies</span></div>
+    <div class="grid">
+      <div class="card"><h3>Agent A · Direct investigation</h3><p>Searches the main topic and retrieves article extracts for candidate-claim extraction.</p><div id="agentA" class="list"><div class="empty">No investigation yet.</div></div></div>
+      <div class="card"><h3>Agent B · Alternative perspective</h3><p>Runs an alternative query and compares extracted article text for possible corroboration.</p><div id="agentB" class="list"><div class="empty">No investigation yet.</div></div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head"><div><div class="eyebrow">05 / Falsification</div><h2>Challenge the findings</h2></div><span class="pill">Counter-evidence search</span></div>
+    <p class="small">The system searches for critical or alternative material and compares article text. Possible conflicts are leads to inspect, not automatic verdicts.</p>
+    <div id="counterResults" class="list"><div class="empty">Counter-evidence search will appear here after research.</div></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head"><div><div class="eyebrow">06 / Verification</div><h2>Claim-level review</h2></div><span class="pill">Preliminary statuses</span></div>
+    <div class="metrics">
+      <div class="metricbox"><div class="small">Supported (preliminary)</div><div class="metric" id="supportedCount">0</div></div>
+      <div class="metricbox"><div class="small">Disputed (preliminary)</div><div class="metric" id="disputedCount">0</div></div>
+      <div class="metricbox"><div class="small">Unresolved</div><div class="metric" id="unresolvedCount">0</div></div>
+    </div>
+    <div id="claims" class="list" style="margin-top:13px"><div class="empty">Claims will appear after the sources are collected.</div></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head"><div><div class="eyebrow">07 / Adaptive research history</div><h2>What changed after a challenge?</h2></div><button id="followupBtn" class="secondary" disabled>Research remaining gaps</button></div>
+    <div id="history" class="list"><div class="empty">The system will record its research steps here.</div></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head"><div><div class="eyebrow">08 / Final output</div><h2>Research report</h2></div><div class="row"><button id="copyBtn" class="secondary" disabled>Copy report</button><button id="downloadBtn" class="secondary" disabled>Download .txt</button></div></div>
+    <div id="report" class="report">Your final report will appear here after an investigation.</div>
+  </section>
+  <footer>EvidenceForge · Research workspace · Review source links and unresolved gaps before drawing conclusions.</footer>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const state = {question:"", a:[], b:[], counter:[], claims:[], history:[], followup:[], subquestions:[], report:"", running:false, sessionId:null, createdAt:null};
+  const DB_NAME = "EvidenceForgeDB";
+  const DB_VERSION = 1;
+  let dbPromise;
+  function openDB() {
+    if (!("indexedDB" in window)) return Promise.reject(new Error("This browser does not support persistent database storage."));
+    if (!dbPromise) dbPromise = new Promise((resolve,reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains("sessions")) {
+          const store = db.createObjectStore("sessions", {keyPath:"id"});
+          store.createIndex("updatedAt", "updatedAt", {unique:false});
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error || new Error("Could not open saved investigations."));
+    });
+    return dbPromise;
+  }
+  async function dbPut(record) {
+    const db = await openDB();
+    return new Promise((resolve,reject) => {
+      const tx = db.transaction("sessions","readwrite");
+      tx.objectStore("sessions").put(record);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error || new Error("Save failed."));
+      tx.onabort = () => reject(tx.error || new Error("Save was cancelled."));
+    });
+  }
+  async function dbAll() {
+    const db = await openDB();
+    return new Promise((resolve,reject) => {
+      const tx = db.transaction("sessions","readonly");
+      const req = tx.objectStore("sessions").getAll();
+      req.onsuccess = () => resolve((req.result || []).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)));
+      req.onerror = () => reject(req.error || new Error("Could not load saved investigations."));
+    });
+  }
+  function setSaveStatus(message, isError=false) {
+    const el=$("saveStatus"); if(!el) return;
+    el.textContent=message; el.style.color=isError ? "var(--red)" : "var(--green)";
+  }
+  function snapshot() {
+    return { id:state.sessionId, question:state.question, a:state.a, b:state.b, counter:state.counter,
+      claims:state.claims, history:state.history, followup:state.followup, subquestions:state.subquestions, report:state.report,
+      createdAt:state.createdAt || Date.now(), updatedAt:Date.now() };
+  }
+  async function saveCurrentSession() {
+    if (!state.question || !state.question.trim()) return;
+    if (!state.sessionId) state.sessionId = "ef-" + Date.now() + "-" + Math.random().toString(36).slice(2,8);
+    if (!state.createdAt) state.createdAt = Date.now();
+    try {
+      await dbPut(snapshot());
+      setSaveStatus("Saved automatically · " + new Date().toLocaleTimeString());
+      await renderSavedInvestigations();
+    } catch(err) {
+      setSaveStatus("Automatic save unavailable: " + err.message + " Keep a downloaded report as backup.", true);
+    }
+  }
+  async function renderSavedInvestigations() {
+    const host=$("savedInvestigations");
+    try {
+      const records=await dbAll();
+      if (!records.length) {
+        host.innerHTML='<div class="empty">No saved investigations yet. Complete a question and it will be saved here automatically.</div>';
+        return;
+      }
+      host.innerHTML=records.map(r=>`<div class="saved-item"><div class="saved-info"><strong>${esc(r.question || "Untitled investigation")}</strong><p>Last saved: ${esc(new Date(r.updatedAt || r.createdAt || Date.now()).toLocaleString())} · ${(r.a||[]).length+(r.b||[]).length+(r.counter||[]).length} source records · ${(r.claims||[]).length} candidate claims</p></div><button class="secondary connect-btn" type="button" data-connect="${esc(r.id)}">Connect</button></div>`).join("");
+      host.querySelectorAll("[data-connect]").forEach(btn=>btn.addEventListener("click",()=>connectSavedInvestigation(btn.dataset.connect)));
+    } catch(err) {
+      host.innerHTML='<div class="empty">Saved history could not be loaded in this browser. Try opening the file in a current version of Chrome or Edge.</div>';
+      setSaveStatus("Saved history unavailable: " + err.message, true);
+    }
+  }
+  async function connectSavedInvestigation(id) {
+    try {
+      const record=(await dbAll()).find(r=>r.id===id);
+      if(!record) { setStatus("That saved investigation could not be found."); return; }
+      Object.assign(state, { question:record.question || "", a:record.a||[], b:record.b||[], counter:record.counter||[],
+        claims:record.claims||[], history:record.history||[], followup:record.followup||[], subquestions:record.subquestions||[], report:record.report||"",
+        sessionId:record.id, createdAt:record.createdAt||record.updatedAt||Date.now(), running:false });
+      $("question").value=state.question;
+      renderSources("agentA",state.a,"No results found for Agent A.");
+      renderSources("agentB",state.b,"No results found for Agent B.");
+      renderSources("counterResults",state.counter,"No counter-evidence results were saved.");
+      renderClaims(); renderHistory(); renderSubquestionCoverage();
+      $("report").textContent=state.report || "No report was saved for this investigation.";
+      $("copyBtn").disabled=!state.report; $("downloadBtn").disabled=!state.report;
+      $("followupBtn").disabled=false;
+      setStatus("Connected to saved investigation. You can review it or run a new question.",100);
+      setSaveStatus("Connected · saved investigation loaded.");
+      $("savedPanel").scrollIntoView({behavior:"smooth",block:"start"});
+    } catch(err) { setStatus("Could not connect to saved investigation: " + err.message); }
+  }
+  function initVoiceAssistant() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      $("voiceBtn").disabled=true;
+      $("voiceSupport").textContent="Voice input is not supported in this browser. Try Chrome or Edge.";
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    let finalTranscript = "";
+    recognition.onstart = () => { finalTranscript=""; $("voiceBtn").classList.add("listening"); $("voiceBtn").textContent="🔴 Listening… click to stop"; $("voiceSupport").textContent="Speak your research question clearly."; };
+    recognition.onresult = event => {
+      let interim="";
+      for(let i=event.resultIndex;i<event.results.length;i++){
+        const transcript=event.results[i][0].transcript;
+        if(event.results[i].isFinal) finalTranscript += transcript; else interim += transcript;
+      }
+      $("question").value=(finalTranscript + (interim ? " " + interim : "")).trim();
+    };
+    recognition.onerror = event => { $("voiceSupport").textContent = event.error==="not-allowed" ? "Microphone permission was denied. Allow microphone access and try again." : "Voice input issue: " + event.error + ". You can still type your question."; };
+    recognition.onend = () => {
+      $("voiceBtn").classList.remove("listening"); $("voiceBtn").textContent="🎙 Ask by voice";
+      if(finalTranscript.trim()) { $("question").value=finalTranscript.trim(); $("voiceSupport").textContent="Voice question captured. Press Start EvidenceForge investigation to research it."; }
+      else if(!$("question").value.trim()) $("voiceSupport").textContent="No speech captured. Try again or type your question.";
+    };
+    $("voiceBtn").addEventListener("click",()=>{
+      if($("voiceBtn").classList.contains("listening")) recognition.stop();
+      else { try { recognition.start(); } catch(e) { $("voiceSupport").textContent="Voice input is already starting. Please wait a moment."; } }
+    });
+  }
+  const setStatus = (msg, pct) => { $("status").textContent = msg; if (pct !== undefined) $("progressBar").style.width = pct + "%"; };
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  function log(title, detail) { state.history.unshift({time:new Date().toLocaleTimeString(), title, detail}); renderHistory(); if(state.question) saveCurrentSession(); }
+  function renderHistory() {
+    $("history").innerHTML = state.history.length ? state.history.map(x=>`<div class="item"><strong>${esc(x.title)} <span class="small">· ${esc(x.time)}</span></strong><p>${esc(x.detail)}</p></div>`).join("") : '<div class="empty">No history yet.</div>';
+  }
+  async function searchWiki(query, limit=5) {
+    const base = "https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query";
+    const searchRes = await fetch(base + "&list=search&srlimit=" + limit + "&srsearch=" + encodeURIComponent(query));
+    if (!searchRes.ok) throw new Error("Source search returned HTTP " + searchRes.status);
+    const searchJson = await searchRes.json();
+    const rows = searchJson.query?.search || [];
+    if (!rows.length) return [];
+
+    // First attempt: ask the MediaWiki Action API for plain-text article extracts.
+    // Do not set exintro: without it, the API can return the full available article text.
+    const titles = rows.map(r => r.title);
+    let pageByTitle = new Map();
+    let contentError = "";
+    try {
+      const extractUrl = base + "&prop=extracts&explaintext=1&exsectionformat=plain&redirects=1&titles=" + encodeURIComponent(titles.join("|"));
+      const extractRes = await fetch(extractUrl);
+      if (!extractRes.ok) throw new Error("HTTP " + extractRes.status);
+      const extractJson = await extractRes.json();
+      const pages = Object.values(extractJson.query?.pages || {});
+      pages.forEach(page => {
+        const cleanTitle = (page.title || "").toLowerCase();
+        pageByTitle.set(cleanTitle, page);
+        if (page.pageid) pageByTitle.set(String(page.pageid), page);
+      });
+    } catch (err) {
+      contentError = err.message || "Article extract request failed";
+    }
+
+    // Resolve each result robustly, then fall back to the public REST summary endpoint
+    // if a full article extract is absent or blocked by the browser/network.
+    const results = await Promise.all(rows.map(async r => {
+      let page = pageByTitle.get(r.title.toLowerCase());
+      let content = (page?.extract || "").trim();
+      let contentType = content.length > 100 ? "Full article text" : "";
+      let contentNote = "";
+      if (content.length < 100) {
+        try {
+          const summaryUrl = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(r.title.replace(/ /g, "_"));
+          const summaryRes = await fetch(summaryUrl, {headers:{"Accept":"application/json"}});
+          if (!summaryRes.ok) throw new Error("HTTP " + summaryRes.status);
+          const summaryJson = await summaryRes.json();
+          if ((summaryJson.extract || "").trim().length > content.length) {
+            content = summaryJson.extract.trim();
+            contentType = "Article summary (fallback)";
+          }
+        } catch (err) {
+          contentNote = "Article content could not be retrieved by the Wikipedia APIs. " + (contentError || err.message || "Network or browser access may be restricted.");
+        }
+      }
+      if (!content) contentNote = contentNote || "No readable extract was returned for this page. Try opening the source link or run the search again.";
+      return {
+        title:r.title,
+        snippet:r.snippet.replace(/<[^>]*>/g,"").replace(/&quot;/g,'"').replace(/&#039;/g,"'").replace(/&amp;/g,"&"),
+        content:content.slice(0,16000),
+        contentType:contentType || "Unavailable",
+        contentNote,
+        url:"https://en.wikipedia.org/wiki/" + encodeURIComponent(r.title.replace(/ /g,"_")),
+        timestamp:r.timestamp || ""
+      };
+    }));
+    return results;
+  }
+  function queryTerms(q) {
+    return q.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(w=>w.length>3 && !["what","when","where","which","with","from","that","this","have","does","about","benefits","risks","impact","effects","effect","explain","compare","should","could","would"].includes(w));
+  }
+  function renderSources(id, sources, emptyText) {
+    $(id).innerHTML = sources.length ? sources.map((s,i)=>`<div class="item"><strong>${i+1}. ${esc(s.title)}</strong><p><strong>Search preview:</strong> ${esc(s.snippet || "No snippet returned.")}</p><p><strong>Evidence text (${esc(s.contentType || "Article text")}):</strong></p>${s.content ? `<details class="article-evidence"><summary>Read article evidence (${s.content.length.toLocaleString()} characters)</summary><div class="article-text">${esc(s.content)}</div></details>` : `<p class="small">${esc(s.contentNote || "Article text could not be retrieved.")}</p>`}<p><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">Open original article ↗</a></p></div>`).join("") : `<div class="empty">${esc(emptyText)}</div>`;
+  }
+  function words(text) {
+    return (String(text||"").toLowerCase().match(/[\p{L}\p{N}]{3,}/gu)||[])
+      .filter(w=>!["the","and","for","that","with","from","this","are","was","were","has","have","had","its","into","than","also","their","they","them","which","such","can","may","often","more","most","some","not","but","about","been","being","these","those"].includes(w));
+  }
+  function sentenceCandidates(sources) {
+    const out=[], seen=new Set();
+    sources.forEach(source=>{
+      const text=(source.content||"").replace(/\s+/g," ");
+      text.split(/(?<=[.!?])\s+/).forEach(sentence=>{
+        const clean=sentence.trim();
+        const ws=words(clean);
+        if(clean.length<65 || clean.length>360 || ws.length<10 || ws.length>55) return;
+        if(/^(references|external links|see also|contents|bibliography)/i.test(clean)) return;
+        const key=clean.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+        if(seen.has(key)) return; seen.add(key);
+        out.push({claim:clean, source, terms:[...new Set(ws)]});
+      });
+    });
+    return out;
+  }
+  function classifyClaims(a,b,counter) {
+    const all=[...a,...b,...counter];
+    const uniqueSources=[...new Map(all.map(s=>[s.title.toLowerCase(),s])).values()];
+    const candidates=sentenceCandidates([...a,...b]).slice(0,45);
+    const scored=candidates.map(candidate=>{
+      const others=uniqueSources.filter(s=>s.title!==candidate.source.title && (s.content||"").length>100);
+      const matches=others.map(source=>{
+        const sw=new Set(words(source.content));
+        const overlap=candidate.terms.filter(w=>sw.has(w));
+        const score=overlap.length/Math.max(1,Math.min(candidate.terms.length,18));
+        const snippet=(source.content||"").slice(0,4500).toLowerCase();
+        const claimText=candidate.claim.toLowerCase();
+        const negations=["not","never","no","false","lack","fails","cannot","unable","unlikely","disputed","contrary"];
+        const claimNeg=negations.some(w=>new RegExp("\\b"+w+"\\b").test(claimText));
+        const sourceNeg=negations.some(w=>new RegExp("\\b"+w+"\\b").test(snippet));
+        return {source,score,overlap:overlap.length,possiblePolarityDifference:claimNeg!==sourceNeg};
+      }).sort((x,y)=>y.score-x.score);
+      const strong=matches.filter(m=>m.overlap>=5 && m.score>=0.22);
+      const likelyConflict=strong.some(m=>m.possiblePolarityDifference && m.score>=0.35);
+      let status="unresolved", explanation="The extracted sentence is a candidate claim. The available article set did not provide enough independent, clearly aligned evidence to assess it.";
+      if(likelyConflict){status="disputed";explanation="A separate article shares several topic terms but differs in simple negation cues. This is a possible conflict to inspect manually, not a verified contradiction.";}
+      else if(strong.length>=2){status="supported";explanation="At least two other retrieved articles share relevant terms with this sentence. This is a relevance-based corroboration signal, not semantic proof or source-quality assessment.";}
+      return {claim:candidate.claim,status,explanation,source:candidate.source,supporting:strong.slice(0,3).map(m=>m.source),counter:matches.filter(m=>m.possiblePolarityDifference).slice(0,2).map(m=>m.source)};
+    });
+    // Prefer candidates with more independent matching articles; keep statuses conservative.
+    return scored.sort((x,y)=>(y.supporting.length-x.supporting.length)).slice(0,8);
+  }
+  function renderClaims() {
+    const count={supported:0,disputed:0,unresolved:0}; state.claims.forEach(c=>count[c.status]++);
+    $("supportedCount").textContent=count.supported; $("disputedCount").textContent=count.disputed; $("unresolvedCount").textContent=count.unresolved;
+    $("claims").innerHTML=state.claims.length ? state.claims.map((c,i)=>`<div class="item"><div class="section-head"><strong>${i+1}. ${esc(c.claim)}</strong><span class="pill ${c.status}">${c.status.toUpperCase()}</span></div><p>${esc(c.explanation)}</p><p><a href="${esc(c.source.url)}" target="_blank" rel="noopener noreferrer">Original article ↗</a></p>${c.supporting?.length?`<p><strong>Potential corroborating articles:</strong> ${c.supporting.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)}</a>`).join(" · ")}</p>`:""}${c.counter?.length?`<p><strong>Possible conflict to inspect:</strong> ${c.counter.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)}</a>`).join(" · ")}</p>`:""}</div>`).join("") : '<div class="empty">No claims to review yet.</div>';
+  }
+  function deriveSubquestions(question) {
+    let topic=String(question||"").trim().replace(/[?!.]+$/g,"");
+    topic=topic.replace(/^(please\s+)?(can you\s+)?(explain|describe|discuss|investigate|research|analyze|analyse|what is|what are|how does|how do|how can|why does|why do|does|do|is|are)\s+/i,"").trim();
+    if(topic.length>170) topic=topic.slice(0,167).replace(/\s+\S*$/,"")+"…";
+    if(!topic) topic=question;
+    const templates=[
+      `What key concepts, definitions, and background are needed to understand ${topic}?`,
+      `What evidence, examples, or findings support the main claims about ${topic}?`,
+      `What limitations, risks, or negative effects are reported for ${topic}?`,
+      `What counterarguments, criticisms, or conflicting findings exist about ${topic}?`,
+      `Which groups, contexts, or conditions affect the outcomes of ${topic}?`,
+      `What uncertainties or important unanswered questions remain about ${topic}?`
+    ];
+    return templates.map((q,i)=>({id:"sq-"+i,question:q,status:"not researched",sources:[],rounds:0,note:"Queued for investigation."}));
+  }
+  function renderSubquestionCoverage() {
+    const list=state.subquestions||[];
+    const total=list.length, evidence=list.filter(x=>x.status==="evidence found").length;
+    const partial=list.filter(x=>x.status==="partial evidence").length;
+    const gaps=list.filter(x=>x.status==="needs follow-up"||x.status==="not researched").length;
+    $("coverageSummary").innerHTML=total ? `<span class="pill">${total} sub-questions</span><span class="pill supported">${evidence} evidence found</span><span class="pill unresolved">${partial} partial</span><span class="pill disputed">${gaps} gaps</span>` : '<span class="pill">Not started</span>';
+    $("subquestionCoverage").innerHTML=total ? list.map((x,i)=>{
+      const count=(x.sources||[]).length, readable=(x.sources||[]).filter(s=>(s.content||"").length>100).length;
+      const width=x.status==="evidence found"?100:x.status==="partial evidence"?55:x.status==="needs follow-up"?20:0;
+      const cls=x.status==="evidence found"?"supported":x.status==="needs follow-up"?"disputed":"unresolved";
+      return `<div class="coverage-item"><div class="section-head"><h3>${i+1}. ${esc(x.question)}</h3><span class="pill ${cls}">${esc(x.status.toUpperCase())}</span></div><div class="coverage-meter"><span style="width:${width}%"></span></div><p>${esc(x.note||"")}</p><p>${count} unique search results · ${readable} with readable article text · ${x.rounds||0} research round(s)</p>${count?`<details><summary class="small">View evidence for this sub-question</summary>${x.sources.map(src=>`<p><a href="${esc(src.url)}" target="_blank" rel="noopener noreferrer">${esc(src.title)}</a> — ${esc(src.snippet||src.contentNote||"No preview available.")}</p>`).join("")}</details>`:""}</div>`;
+    }).join("") : '<div class="empty">Start an investigation to generate and research sub-questions.</div>';
+  }
+  async function researchSubquestion(item, round=1) {
+    item.status="researching"; item.note=`Research round ${round}: searching the sub-question and looking for limitations or conflicting evidence.`;
+    renderSubquestionCoverage();
+    const terms=queryTerms(item.question).slice(0,6).join(" ") || item.question;
+    const direct=await searchWiki(item.question,3);
+    const challenge=await searchWiki(terms+" limitations criticism conflicting evidence",3);
+    const all=[...(item.sources||[]),...direct,...challenge];
+    item.sources=[...new Map(all.map(src=>[src.url,src])).values()];
+    item.rounds=round;
+    const readable=item.sources.filter(src=>(src.content||"").length>100).length;
+    if(item.sources.length>=3 && readable>=1){item.status="evidence found";item.note="Search coverage threshold met: multiple results were found and at least one had readable article text. Manually assess relevance, quality, and whether the question is truly answered.";}
+    else if(item.sources.length>0){item.status="partial evidence";item.note="Some search leads were found, but evidence quantity or readable article text is limited. Treat this as a coverage gap, not an answer.";}
+    else {item.status="needs follow-up";item.note="No results returned for this sub-question. It remains unresolved and should be searched with a different source or wording.";}
+    renderSubquestionCoverage();
+  }
+  async function runCoveragePass(isFollowup=false) {
+    if(!state.subquestions.length) state.subquestions=deriveSubquestions(state.question);
+    const targets=isFollowup ? state.subquestions.filter(x=>x.status!=="evidence found") : state.subquestions;
+    if(!targets.length){log("Coverage check","All sub-questions met the prototype's search threshold. This does not mean the research is exhaustive.");return;}
+    for(let i=0;i<targets.length;i++){
+      const item=targets[i];
+      setStatus(`${isFollowup?"Targeted follow-up":"Adaptive coverage"}: sub-question ${i+1} of ${targets.length}…`,Math.min(94,58+Math.round((i/targets.length)*34)));
+      log("Researching sub-question",item.question);
+      try { await researchSubquestion(item,(item.rounds||0)+1); }
+      catch(err){item.status="needs follow-up";item.note="Search failed: "+err.message;renderSubquestionCoverage();log("Sub-question search error",item.question+" — "+err.message);}
+      await saveCurrentSession();
+    }
+    const gaps=state.subquestions.filter(x=>x.status!=="evidence found").length;
+    log(isFollowup?"Targeted coverage pass complete":"Sub-question coverage pass complete",`${state.subquestions.length-gaps}/${state.subquestions.length} sub-questions met the search threshold; ${gaps} remain partial or unresolved.`);
+  }
+  function makeReport() {
+    const lines = ["EVIDENCEFORGE — RESEARCH REPORT","=".repeat(40),"Question: "+state.question,"Generated: "+new Date().toLocaleString(),"","METHOD AND LIMITATIONS: The system searches Wikipedia, fetches readable article extracts, extracts candidate factual sentences, and compares their terms against other retrieved article text. Labels are heuristic review prompts, not verified truth. It does not use an LLM, entailment model, scholarly source ranking, or robust contradiction detection.","","1. INDEPENDENT RESEARCH — AGENT A"];
+    (state.a.length?state.a:[]).forEach((s,i)=>lines.push(`${i+1}. ${s.title}\n   Preview: ${s.snippet}\n   Evidence type: ${s.contentType || "Unavailable"}\n   Article evidence: ${(s.content || s.contentNote || "Unavailable")}\n   ${s.url}`));
+    lines.push("","2. INDEPENDENT RESEARCH — AGENT B");
+    state.b.forEach((s,i)=>lines.push(`${i+1}. ${s.title}\n   Preview: ${s.snippet}\n   Evidence type: ${s.contentType || "Unavailable"}\n   Article evidence: ${(s.content || s.contentNote || "Unavailable")}\n   ${s.url}`));
+    lines.push("","3. FALSIFICATION / ALTERNATIVE SEARCH");
+    state.counter.forEach((s,i)=>lines.push(`${i+1}. ${s.title}\n   Preview: ${s.snippet}\n   Evidence type: ${s.contentType || "Unavailable"}\n   Article evidence: ${(s.content || s.contentNote || "Unavailable")}\n   ${s.url}`));
+    lines.push("","4. CLAIM REVIEW");
+    state.claims.forEach((c,i)=>lines.push(`${i+1}. ${c.claim}\n   Preliminary status: ${c.status.toUpperCase()}\n   Explanation: ${c.explanation}\n   Source: ${c.source.url}`));
+    lines.push("","5. SUB-QUESTION COVERAGE");
+    if(state.subquestions.length){
+      state.subquestions.forEach((x,i)=>{
+        lines.push(`${i+1}. ${x.question}`,`   Coverage status: ${x.status.toUpperCase()}`,`   Research rounds: ${x.rounds||0}`,`   Note: ${x.note||"No note"}`);
+        (x.sources||[]).forEach(src=>lines.push(`   Evidence lead: ${src.title} — ${src.url}`));
+      });
+      const gaps=state.subquestions.filter(x=>x.status!=="evidence found");
+      lines.push(`Coverage summary: ${state.subquestions.length-gaps.length}/${state.subquestions.length} met the prototype search threshold.`);
+    } else lines.push("No sub-question coverage data is available.");
+    lines.push("Coverage caveat: status reflects result counts and readable article text, not semantic proof that the sub-question has been answered.");
+    lines.push("","6. INVESTIGATION HISTORY");
+    state.history.slice().reverse().forEach(h=>lines.push(`${h.time} — ${h.title}: ${h.detail}`));
+    lines.push("","7. LIMITATIONS","- Search coverage is limited and may miss important sources.","- Search snippets may be incomplete or outdated.","- Topic-word matching does not prove that sources agree or contradict each other.","- The prototype does not use a language model to validate factual claims.","- A claim surviving a challenge is not proof of absolute truth.");
+    state.report=lines.join("\n"); $("report").textContent=state.report;
+    $("copyBtn").disabled=false; $("downloadBtn").disabled=false;
+  }
+  async function runInvestigation(isFollowup=false) {
+    if(state.running) return;
+    const q=$("question").value.trim();
+    if(!q){setStatus("Please enter a research question.");$("question").focus();return;}
+    state.running=true; $("startBtn").disabled=true; $("followupBtn").disabled=true;
+    if(!isFollowup) state.question=q;
+    try {
+      if(!isFollowup){state.sessionId=null;state.createdAt=Date.now();state.a=[];state.b=[];state.counter=[];state.claims=[];state.history=[];state.followup=[];state.subquestions=deriveSubquestions(q);state.report="";renderHistory();renderSubquestionCoverage();renderSources("agentA",[],"Searching…");renderSources("agentB",[],"Searching…");renderSources("counterResults",[],"Searching for alternative perspectives…");}
+      else if(!state.subquestions.length) state.subquestions=deriveSubquestions(state.question||q);
+      if(!isFollowup){
+        setStatus("Agent A is searching the main question…",5); log("Investigation started","The main question and a separate sub-question coverage plan were created.");
+        state.a=await searchWiki(q,5); renderSources("agentA",state.a,"No results found for Agent A.");
+        setStatus("Agent B is searching using an alternative query…",22); log("Agent A search complete",`${state.a.length} source results collected.`);
+        const terms=queryTerms(q); const bQuery=(terms.slice(0,5).join(" ") || q)+" criticism limitations debate";
+        state.b=await searchWiki(bQuery,5); renderSources("agentB",state.b,"No results found for Agent B.");
+        setStatus("Falsification stage is looking for counter-evidence…",42); log("Agent B search complete",`${state.b.length} source results collected using a different query strategy.`);
+        const cQuery=(terms.slice(0,5).join(" ") || q)+" criticism risks controversy limitations opposing evidence";
+        state.counter=await searchWiki(cQuery,5); renderSources("counterResults",state.counter,"No alternative search results found. This does not prove there is no counter-evidence.");
+        log("Falsification search complete",`${state.counter.length} alternative/critical source results found. These are leads for review, not verified contradictions.`);
+        setStatus("Extracting candidate claims and comparing article text…",54);
+        state.claims=classifyClaims(state.a,state.b,state.counter); renderClaims();
+        log("Verification pass complete",`${state.claims.length} source-based items prepared; statuses are preliminary rule-based signals.`);
+      } else {
+        // Follow-up focuses on gaps rather than rerunning the same broad main query.
+        log("Adaptive follow-up started","Prioritizing sub-questions that did not meet the search coverage threshold.");
+      }
+      await runCoveragePass(isFollowup);
+      state.followup.push({at:new Date().toLocaleTimeString(),a:state.a.length,b:state.b.length,c:state.counter.length,gaps:state.subquestions.filter(x=>x.status!=="evidence found").length});
+      makeReport(); await saveCurrentSession(); $("followupBtn").disabled=false;
+      const gaps=state.subquestions.filter(x=>x.status!=="evidence found").length;
+      setStatus(gaps ? `Research pass complete. ${gaps} sub-question(s) still need follow-up; review the coverage panel and run targeted follow-up.` : "Research pass complete. All sub-questions met the prototype's search threshold; manually review relevance and source quality.",100);
+    } catch(err) {
+      console.error(err); setStatus("Search could not complete: "+err.message+". Check your internet connection and try again.");
+      log("Search error",err.message);
+      if(state.a.length || state.b.length || state.counter.length || state.subquestions.length){renderSubquestionCoverage();makeReport();await saveCurrentSession();}
+    } finally {state.running=false;$ ("startBtn").disabled=false;$ ("followupBtn").disabled=false;}
+  }
+  $("startBtn").addEventListener("click",()=>runInvestigation(false));
+  $("followupBtn").addEventListener("click",()=>runInvestigation(true));
+  $("demoBtn").addEventListener("click",()=>{$("question").value="What are the benefits and risks of artificial intelligence in education?";});
+  $("copyBtn").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(state.report);setStatus("Report copied to clipboard.",100);}catch(e){setStatus("Clipboard access was blocked. Select and copy the report text manually.");}});
+  $("downloadBtn").addEventListener("click",()=>{const blob=new Blob([state.report],{type:"text/plain;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="EvidenceForge-Report.txt";a.click();URL.revokeObjectURL(a.href);});
+  $("refreshSavedBtn").addEventListener("click",renderSavedInvestigations);
+  initVoiceAssistant();
+  renderSavedInvestigations();
+})();
+</script>
+</body>
+</html>
